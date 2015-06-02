@@ -1,0 +1,25 @@
+{
+  "env":{
+    "browser":true,
+    "es6":true,
+    "mocha":true
+  },
+  "ecmaFeatures":{
+    "modules":true,
+    "jsx":true
+  },
+  "plugins": [
+    "react"
+  ],
+  "parser": "babel-eslint",
+  "rules": {
+    "semi": 1,
+    "global-strict": 0,
+    "quotes": [2, "single"],
+    "key-spacing": 0,
+    "no-trailing-spaces": 0,
+    "eol-last": 0,
+    "no-underscore-dangle": 0,
+    "no-console": 0
+  }
+}
