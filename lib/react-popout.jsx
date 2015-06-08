@@ -28,7 +28,7 @@ export default class PopoutWindow extends React.Component {
     };
   }
 
-  componentWillDismount() {
+  componentWillUnmount() {
     this.closeWindow();
   }
 

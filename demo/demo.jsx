@@ -8,6 +8,7 @@ class Example extends React.Component {
     this.popout = this.popout.bind(this);
     this.incrementTimer = this.incrementTimer.bind(this);
     this.popoutClosed = this.popoutClosed.bind(this);
+    this.popoutContentClicked = this.popoutContentClicked.bind(this);
     this.state = { isPoppedOut: false, timer: 0 };
   }
 
@@ -21,8 +22,14 @@ class Example extends React.Component {
   }
 
   popoutClosed() {
-    clearInterval(this.state.timerId);
-    this.setState({isPoppedOut: false, timerId: null, timer: 0});
+    if (this.state.timerId) {
+      clearInterval(this.state.timerId);
+      this.setState({isPoppedOut: false, timerId: null, timer: 0});
+    }
+  }
+
+  popoutContentClicked() {
+    this.popoutClosed();
   }
 
   render() {
@@ -30,7 +37,10 @@ class Example extends React.Component {
       return (
         // Remove url parameter to see about:blank support
         <Popout title='Test' onClosing={this.popoutClosed}>
-          <div>Popped out content! Timer: {this.state.timer}</div>
+          <div>
+            <div>Popped out content! Timer: {this.state.timer}</div>
+            <div onClick={this.popoutContentClicked}>Close</div>
+          </div>
         </Popout>
       );
     } else {
