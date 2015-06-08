@@ -73,6 +73,7 @@ export default class PopoutWindow extends React.Component {
           return;
         }
       }
+
       win.document.title = this.props.title;
       container = win.document.createElement('div');
       container.id = divId;

@@ -30,6 +30,11 @@ Object representing window options. See https://developer.mozilla.org/en-US/docs
 Example:
 `<Popout options={{left: '100px', top: '200px'}} />`
 
+By default 500px wide, 400px high and centered over the window hosting the react component.
+
+You can also specify a function with signature `(options, window) => { }` to perform calculations.
+For example top is calculated with `(o, w) => ((w.innerHeight - o.height) / 2) + w.screenY`
+
 ### window [optional]
 Instead of using the `window` global, a window object can be passed in. It needs the following functions on it:
 
@@ -48,6 +53,7 @@ Instead of using the `window` global, a window object can be passed in. It needs
   }
 }
 ```
+This can be used if you need to intercept the calls and do something else.
 
 ## Example hosting component
 ``` js
@@ -86,3 +92,5 @@ class HostingComponent {
   }
 }
 ```
+
+The popped out content can have props set and will render just as you would expect a normal React component to render.
