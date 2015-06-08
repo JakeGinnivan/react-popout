@@ -3,6 +3,7 @@ import assign from 'lodash.assign';
 import isFunction from 'lodash.isfunction';
 import reduce from 'lodash.reduce';
 
+const divId = 'popout-content-container';
 export default class PopoutWindow extends React.Component {
   constructor(props) {
     super(props);
@@ -53,28 +54,39 @@ export default class PopoutWindow extends React.Component {
       return !acc ? part : acc + ',' + part;
     }, '');
 
-    win = ownerWindow.open(this.props.url, this.props.title, optionsString);
+    win = ownerWindow.open(this.props.url || 'about:blank', this.props.title, optionsString);
     win.onbeforeunload = () => {
       if (container) {
         React.unmountComponentAtNode(container);
-        this.windowClosing();
       }
+      this.windowClosing();
     };
     var onloadHandler = () => {
+      // Some browsers don't call onload in some cases for popup windows (looking at you firefox).
+      // If anyone wants to make this better, that would be awesome
+      if (container) {
+        var existing = win.document.getElementById(divId);
+        if (!existing){
+          React.unmountComponentAtNode(container);
+          container = null;
+        } else{
+          return;
+        }
+      }
       win.document.title = this.props.title;
       container = win.document.createElement('div');
+      container.id = divId;
       win.document.body.appendChild(container);
       React.render(this.props.children, container);
       api.update = newComponent => {
-          React.render(newComponent, container);
+        React.render(newComponent, container);
       };
       api.close = () => win.close();
     };
-    if (this.props.url) {
-      win.onload = onloadHandler;
-    } else {
-      onloadHandler();
-    }
+
+    win.onload = onloadHandler;
+    // Just incase onload doesn't fire
+    onloadHandler();
 
     this.setState({ openedWindow: api });
   }

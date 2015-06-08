@@ -11,7 +11,9 @@
     "react",
     "react-component",
     "window",
-    "popup"
+    "popup",
+    "open",
+    "browser"
   ],
   "scripts": {
     "prebuild:demo": "npm run build:dist",

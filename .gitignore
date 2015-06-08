@@ -28,3 +28,4 @@ node_modules
 *.orig
 
 demo/demo.js
+dist/react-popout.min.js
