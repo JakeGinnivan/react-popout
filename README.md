@@ -2,6 +2,9 @@
 React popout is a React component wrapping `window.open` allowing you to host content in a browser popup window.
 
  > npm install react-popout --save
+ 
+## Demo
+To see it in action just go to [http://jake.ginnivan.net/react-popout](http://jake.ginnivan.net/react-popout)
 
 ## Usage
 The usage is really simple, when the component is mounted the popup is open, when it is unmounted the popup is closed.
