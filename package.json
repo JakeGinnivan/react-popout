@@ -19,6 +19,7 @@
     "prebuild:demo": "npm run build:dist",
     "demo": "webpack-dev-server --progress --colors --hot -d --port 8880 --config _webpack.demo.config.js",
     "build:dist": "webpack --config _webpack.dist.config.js --optimize-minimize",
+    "build:demo": "webpack --config _webpack.demo.config.js --optimize-minimize",
     "test": "karma start _karma.conf.js --autowatch --no-single-run",
     "prepublish": "npm run build:dist"
   },
@@ -45,7 +46,7 @@
     "node-libs-browser": "^0.5.2",
     "webpack": "^1.9.10"
   },
-  "dependencies": {
+  "peerDependencies": {
     "react": "^0.13.3"
   }
 }
