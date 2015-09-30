@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import domready from 'domready';
 import Popout from '../lib/react-popout.jsx';
 
@@ -57,5 +58,5 @@ class Example extends React.Component {
 domready(() => {
   var container = document.createElement('div');
   document.body.appendChild(container);
-  React.render(<Example />, container);
+  ReactDOM.render(<Example />, container);
 });
