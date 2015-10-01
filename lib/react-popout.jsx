@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import assign from 'lodash.assign';
 import isFunction from 'lodash.isfunction';
 import reduce from 'lodash.reduce';
@@ -57,7 +58,7 @@ export default class PopoutWindow extends React.Component {
     win = ownerWindow.open(this.props.url || 'about:blank', this.props.title, optionsString);
     win.onbeforeunload = () => {
       if (container) {
-        React.unmountComponentAtNode(container);
+        ReactDOM.unmountComponentAtNode(container);
       }
       this.windowClosing();
     };
@@ -67,7 +68,7 @@ export default class PopoutWindow extends React.Component {
       if (container) {
         var existing = win.document.getElementById(divId);
         if (!existing){
-          React.unmountComponentAtNode(container);
+          ReactDOM.unmountComponentAtNode(container);
           container = null;
         } else{
           return;
@@ -78,9 +79,9 @@ export default class PopoutWindow extends React.Component {
       container = win.document.createElement('div');
       container.id = divId;
       win.document.body.appendChild(container);
-      React.render(this.props.children, container);
+      ReactDOM.render(this.props.children, container);
       api.update = newComponent => {
-        React.render(newComponent, container);
+        ReactDOM.render(newComponent, container);
       };
       api.close = () => win.close();
     };
