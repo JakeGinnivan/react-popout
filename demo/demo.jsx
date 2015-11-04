@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import domready from 'domready';
 import Popout from '../lib/react-popout.jsx';
 
-class Example extends React.Component {
+export default class Example extends React.Component {
   constructor(props) {
     super(props);
     this.popout = this.popout.bind(this);
@@ -47,16 +47,10 @@ class Example extends React.Component {
     } else {
       return (
         <div>
-          <strong>Section <a style={{ textDecoration: 'underline', color: 'blue', cursor: 'pointer' }} onClick={this.popout}>(pop window out)</a></strong>
-          <div>Inline content</div>
+          <strong>Example: Only render popout <a style={{ textDecoration: 'underline', color: 'blue', cursor: 'pointer' }} onClick={this.popout}>(pop window out)</a></strong>
+          <div>Demo 1 - Inline content</div>
         </div>
       );
     }
   }
 }
-
-domready(() => {
-  var container = document.createElement('div');
-  document.body.appendChild(container);
-  ReactDOM.render(<Example />, container);
-});

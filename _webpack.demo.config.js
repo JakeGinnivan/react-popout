@@ -1,8 +1,8 @@
 module.exports = {
-  entry: ['./demo/demo.jsx'],
+  entry: ['./demo/exampleContainer.jsx'],
   output: {
     path: './demo',
-    filename: 'demo.js'
+    filename: 'examples.js'
   },
   devServer: {
     contentBase: './demo',
