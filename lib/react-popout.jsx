@@ -62,6 +62,11 @@ export default class PopoutWindow extends React.Component {
       }
       this.windowClosing();
     };
+    if (this.props.onMessage) {
+      win.onmessage = (event) => {
+        this.props.onMessage(event);
+      }
+    }
     var onloadHandler = () => {
       // Some browsers don't call onload in some cases for popup windows (looking at you firefox).
       // If anyone wants to make this better, that would be awesome
@@ -118,6 +123,7 @@ PopoutWindow.propTypes = {
   title: React.PropTypes.string.isRequired,
   url: React.PropTypes.string,
   onClosing: React.PropTypes.func,
+  onMessage: React.PropTypes.func,
   options: React.PropTypes.object,
   window: React.PropTypes.object
 };
