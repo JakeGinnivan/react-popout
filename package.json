@@ -26,7 +26,8 @@
   "author": "Jake Ginnivan",
   "license": "MIT",
   "devDependencies": {
-    "babel-core": "^5.4.7",
+    "babel": "^5.8.23",
+    "babel-core": "^5.8.33",
     "babel-eslint": "^3.1.10",
     "babel-loader": "^5.1.3",
     "babel-runtime": "^5.4.7",
@@ -39,11 +40,10 @@
     "karma-source-map-support": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.5",
     "karma-webpack": "^1.5.1",
-    "lodash.assign": "^3.2.0",
-    "lodash.isfunction": "^3.0.5",
-    "lodash.reduce": "^3.1.2",
     "mocha": "^2.2.5",
     "node-libs-browser": "^0.5.2",
-    "webpack": "^1.9.10"
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "webpack": "^1.11.0"
   }
 }
