@@ -10,9 +10,13 @@ module.exports = {
     inline: true
   },
   module: {
-    loaders: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader?optional=runtime'},
-      { test: /\.jsx$/, exclude: /node_modules/, loader: 'babel-loader?optional=runtime'}
-    ]
+    loaders: [{
+      test: /\.(js|jsx)$/,
+      exclude: /node_modules/,
+      loader: 'babel',
+      query: {
+        stage: 0
+      }
+    }]
   }
 };

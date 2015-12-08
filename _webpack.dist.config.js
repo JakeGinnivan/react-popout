@@ -6,10 +6,14 @@ module.exports = {
     libraryTarget: 'umd'
   },
   module: {
-    loaders: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
-      { test: /\.jsx$/, exclude: /node_modules/, loader: 'babel-loader'}
-    ]
+    loaders: [{
+      test: /\.(js|jsx)$/,
+      exclude: /node_modules/,
+      loader: 'babel',
+      query: {
+        stage: 0
+      }
+    }]
   },
   externals: {
     react: {
