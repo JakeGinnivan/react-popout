@@ -2,7 +2,7 @@
 React popout is a React component wrapping `window.open` allowing you to host content in a browser popup window.
 
  > npm install react-popout --save
- 
+
 ## Demo
 To see it in action just go to [http://jake.ginnivan.net/react-popout](http://jake.ginnivan.net/react-popout)
 
@@ -58,7 +58,25 @@ Instead of using the `window` global, a window object can be passed in. It needs
 ```
 This can be used if you need to intercept the calls and do something else.
 
+### containerID [optional]
+
+Assigns an Id to the container that will be injected in the popup window `document.body`, defaults to `popout-content-container`, useful for cascading styles.
+
+Example:
+```
+// input
+<Popout containerId='tearoff'>
+  <SomeComponent />
+</Popout>
+
+// output in new window:
+<div id="tearoff">
+  <SomeComponent />
+</div>
+```
+
 ## Example hosting component
+
 ``` js
 class HostingComponent {
   constructor(props) {
