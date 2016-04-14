@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import domready from 'domready';
-import Popout from '../lib/react-popout.jsx';
+import Popout from '../lib/react-popout.js';
 
 export default class Example2 extends React.Component {
   constructor(props) {
@@ -34,11 +34,11 @@ export default class Example2 extends React.Component {
   }
 
   render() {
-    
+
       return (
         <div>
           { this.state.isPoppedOut ?
-          
+
           <Popout title='Test' onClosing={this.popoutClosed}>
             <div>
               <div>Popped out content! Timer: {this.state.timer}</div>
@@ -52,7 +52,7 @@ export default class Example2 extends React.Component {
           </div>
         </div>
       );
-      
+
     }
   }
 
