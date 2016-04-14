@@ -79,7 +79,7 @@ class HostingComponent {
   render() {
     if (this.state.isPoppedOut) {
       return (
-        <Popout url='popout.html' title='Window title' onClosing={this.popupClosed}>
+        <Popout url='popout.html' title='Window title' onClosing={this.popoutClosed}>
           <div>Popped out content!</div>
         </Popout>
       );
