@@ -44,6 +44,7 @@ export default class PopoutWindow extends React.Component {
     this.state = {
       openedWindow: null
     };
+    this.closeWindow = this.closeWindow.bind(this)
   }
 
   /**
@@ -59,7 +60,7 @@ export default class PopoutWindow extends React.Component {
   }
 
   componentDidMount(){
-    let win,
+    let popoutWindow,
         container;
 
     const options      = Object.assign({}, this.defaultOptions, this.props.options),
@@ -69,7 +70,7 @@ export default class PopoutWindow extends React.Component {
               ReactDOM.render(newComponent, container);
             },
             close(){
-              win.close();
+              popoutWindow && popoutWindow.close();
             }
           };
 
@@ -86,38 +87,41 @@ export default class PopoutWindow extends React.Component {
       return ret.join(',');
     };
 
-    win = ownerWindow.open(this.props.url || 'about:blank', this.props.title, createOptions());
+    popoutWindow = ownerWindow.open(this.props.url || 'about:blank', this.props.title, createOptions());
 
-    win.onbeforeunload = () =>{
+    popoutWindow.onbeforeunload = () =>{
       container && ReactDOM.unmountComponentAtNode(container);
       this.windowClosing();
     };
+    // Close any open popouts when page unloads/refeshes
+    ownerWindow.addEventListener('unload', this.closeWindow);
 
     const onloadHandler = () =>{
       if (container){
-        if (win.document.getElementById(CONTAINER_ID)) return;
+        if (popoutWindow.document.getElementById(CONTAINER_ID)) return;
 
         ReactDOM.unmountComponentAtNode(container);
         container = null;
       }
 
-      win.document.title = this.props.title;
-      container = win.document.createElement('div');
+      popoutWindow.document.title = this.props.title;
+      container = popoutWindow.document.createElement('div');
       container.id = CONTAINER_ID;
-      win.document.body.appendChild(container);
+      popoutWindow.document.body.appendChild(container);
 
       ReactDOM.render(this.props.children, container);
     };
 
-    win.onload = onloadHandler;
+    popoutWindow.onload = onloadHandler;
     // Just in case that onload doesn't fire / has fired already, we call it manually if it's ready.
-    win.document.readyState === 'complete' && onloadHandler();
+    popoutWindow.document.readyState === 'complete' && onloadHandler();
 
     this.setState({openedWindow});
   }
 
   closeWindow(){
     this.state.openedWindow && this.state.openedWindow.close();
+    (this.props.window || window).removeEventListener('unload', this.closeWindow);
   }
 
   windowClosing(){
