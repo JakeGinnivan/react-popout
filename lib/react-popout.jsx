@@ -73,7 +73,7 @@ export default class PopoutWindow extends React.Component {
             }
           };
 
-    const createOptions = () =>{
+    const createOptions = () => {
       const ret = [];
       for (let key in options){
         options.hasOwnProperty(key) && ret.push(key + '=' + (

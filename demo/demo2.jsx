@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import domready from 'domready';
-import Popout from '../lib/react-popout.js';
+import Popout from '../lib/react-popout.jsx';
 
 export default class Example2 extends React.Component {
   constructor(props) {
