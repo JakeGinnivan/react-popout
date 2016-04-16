@@ -76,6 +76,11 @@ export default class PopoutWindow extends React.Component {
             }
           };
 
+    if (!ownerWindow) {
+      // If we have no owner windows, bail. Likely server side render
+      return;
+    }
+
     const createOptions = () => {
       const ret = [];
       for (let key in options){
@@ -134,7 +139,8 @@ export default class PopoutWindow extends React.Component {
    * Bubble changes
    */
   componentDidUpdate(){
-    this.state.openedWindow.update(this.props.children);
+    // For SSR we might get updated but there will be no openedWindow. Make sure openedWIndow exists before calling
+    this.state.openedWindow && this.state.openedWindow.update(this.props.children);
   }
 
   render(){
