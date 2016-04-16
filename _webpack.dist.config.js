@@ -1,5 +1,5 @@
 module.exports = {
-  entry: ['./lib/react-popout.js'],
+  entry: ['./lib/react-popout.jsx'],
   output: {
     path: './dist',
     filename: 'react-popout.min.js',
