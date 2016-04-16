@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import getAssign from 'object.assign/polyfill';
+const assign = getAssign()
 
 let CONTAINER_ID = 'popout-content-container';
 
@@ -63,7 +65,7 @@ export default class PopoutWindow extends React.Component {
     let popoutWindow,
         container;
 
-    const options      = Object.assign({}, this.defaultOptions, this.props.options),
+    const options      = assign({}, this.defaultOptions, this.props.options),
           ownerWindow  = this.props.window || window,
           openedWindow = {
             update(newComponent){
