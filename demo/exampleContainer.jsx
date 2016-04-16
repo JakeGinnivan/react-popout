@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import domready from 'domready';
 import Popout from '../lib/react-popout.jsx';
-import Example2 from './demo2.jsx';
 import Example from './demo.jsx';
+import Example2 from './demo2.jsx';
+import Example3 from './demo3.jsx';
 
 class ExampleContainer extends React.Component {
   render() {
@@ -13,6 +14,8 @@ class ExampleContainer extends React.Component {
         <Example />
         <hr/>
         <Example2 />
+        <hr/>
+        <Example3 />
       </div>
     );
   }
