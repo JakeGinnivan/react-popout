@@ -6,17 +6,16 @@ module.exports = {
   },
   devServer: {
     contentBase: './demo',
-    hot: true,
-    inline: true
+    hot: true
   },
   module: {
     loaders: [{
-      test: /\.(js|jsx)$/,
+      test: /\.j(s|sx)$/,
       exclude: /node_modules/,
       loader: 'babel',
       query: {
-        stage: 0
+        presets: ['es2015', 'stage-0', 'react']
       }
     }]
-  }
+  },
 };

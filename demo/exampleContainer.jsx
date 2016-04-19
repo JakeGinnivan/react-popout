@@ -1,14 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import domready from 'domready';
-import Popout from '../lib/react-popout.jsx';
 import Example from './demo.jsx';
 import Example2 from './demo2.jsx';
 import Example3 from './demo3.jsx';
 
 class ExampleContainer extends React.Component {
   render() {
-
     return (
       <div>
         <Example />
@@ -21,8 +18,6 @@ class ExampleContainer extends React.Component {
   }
 }
 
-domready(() => {
-  var container = document.createElement('div');
-  document.body.appendChild(container);
-  ReactDOM.render(<ExampleContainer />, container);
-});
+const container = document.createElement('div');
+document.body.appendChild(container);
+ReactDOM.render(<ExampleContainer />, container);

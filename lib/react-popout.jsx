@@ -1,9 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import getAssign from 'object.assign/polyfill';
-const assign = getAssign()
+import React        from 'react';
+import ReactDOM     from 'react-dom';
 
-let CONTAINER_ID = 'popout-content-container';
+const _CONTAINER_ID = Symbol('container_id');
 
 /**
  * @class PopoutWindow
@@ -20,32 +18,33 @@ export default class PopoutWindow extends React.Component {
     options: React.PropTypes.object,
     window: React.PropTypes.object,
     containerId: React.PropTypes.string
-  }
+  };
 
-	/**
+  state = {
+    openedWindow: null
+  };
+
+  defaultOptions = {
+    toolbar: 'no',
+    location: 'no',
+    directories: 'no',
+    status: 'no',
+    menubar: 'no',
+    scrollbars: 'yes',
+    resizable: 'yes',
+    width: 500,
+    height: 400,
+    top: (o, w) => ((w.innerHeight - o.height) / 2) + w.screenY,
+    left: (o, w) => ((w.innerWidth - o.width) / 2) + w.screenX
+  };
+
+  /**
    * @constructs PoppoutWindow
    * @param props
    */
   constructor(props){
     super(props);
-
-    this.defaultOptions = {
-      toolbar: 'no',
-      location: 'no',
-      directories: 'no',
-      status: 'no',
-      menubar: 'no',
-      scrollbars: 'yes',
-      resizable: 'yes',
-      width: 500,
-      height: 400,
-      top: (o, w) => ((w.innerHeight - o.height) / 2) + w.screenY,
-      left: (o, w) => ((w.innerWidth - o.width) / 2) + w.screenX
-    };
-
-    this.state = {
-      openedWindow: null
-    };
+    this[_CONTAINER_ID] = props.containerId || 'popout-content-container';
     this.closeWindow = this.closeWindow.bind(this)
   }
 
@@ -54,7 +53,7 @@ export default class PopoutWindow extends React.Component {
    * @param props
    */
   componentWillReceiveProps(props){
-    props.containerId && (CONTAINER_ID = props.containerId);
+    props.containerId && (this[_CONTAINER_ID] = props.containerId);
   }
 
   componentWillUnmount(){
@@ -65,7 +64,7 @@ export default class PopoutWindow extends React.Component {
     let popoutWindow,
         container;
 
-    const options      = assign({}, this.defaultOptions, this.props.options),
+    const options      = Object.assign({}, this.defaultOptions, this.props.options),
           ownerWindow  = this.props.window || window,
           openedWindow = {
             update(newComponent){
@@ -105,7 +104,7 @@ export default class PopoutWindow extends React.Component {
 
     const onloadHandler = () =>{
       if (container){
-        if (popoutWindow.document.getElementById(CONTAINER_ID)) return;
+        if (popoutWindow.document.getElementById(this[_CONTAINER_ID])) return;
 
         ReactDOM.unmountComponentAtNode(container);
         container = null;
@@ -113,7 +112,7 @@ export default class PopoutWindow extends React.Component {
 
       popoutWindow.document.title = this.props.title;
       container = popoutWindow.document.createElement('div');
-      container.id = CONTAINER_ID;
+      container.id = this[_CONTAINER_ID];
       popoutWindow.document.body.appendChild(container);
 
       ReactDOM.render(this.props.children, container);
