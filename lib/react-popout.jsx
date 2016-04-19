@@ -1,6 +1,5 @@
 import React        from 'react';
 import ReactDOM     from 'react-dom';
-
 const _CONTAINER_ID = Symbol('container_id');
 
 /**
@@ -17,7 +16,8 @@ export default class PopoutWindow extends React.Component {
     onClosing: React.PropTypes.func,
     options: React.PropTypes.object,
     window: React.PropTypes.object,
-    containerId: React.PropTypes.string
+    containerId: React.PropTypes.string,
+    children: React.PropTypes.element
   };
 
   state = {
@@ -45,7 +45,7 @@ export default class PopoutWindow extends React.Component {
   constructor(props){
     super(props);
     this[_CONTAINER_ID] = props.containerId || 'popout-content-container';
-    this.closeWindow = this.closeWindow.bind(this)
+    this.closeWindow = this.closeWindow.bind(this);
   }
 
   /**
@@ -143,7 +143,7 @@ export default class PopoutWindow extends React.Component {
   }
 
   render(){
-    return <div />;
+    return <div></div>;
   }
 
 }
