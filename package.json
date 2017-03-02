@@ -45,11 +45,13 @@
     "karma-webpack": "^1.5.1",
     "mocha": "^2.2.5",
     "node-libs-browser": "^0.5.2",
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0",
     "webpack": "^1.11.0",
     "webpack-dev-server": "^1.12.1"
   },
   "peerDependencies": {
-    "react": "^0.14.8",
-    "react-dom": "^0.14.8"
+    "react": "^0.14.0 || ^15.0.0",
+    "react-dom": "^0.14.0 || ^15.0.0"
   }
 }
