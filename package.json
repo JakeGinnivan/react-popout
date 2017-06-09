@@ -20,7 +20,6 @@
     "demo": "webpack-dev-server --progress --colors --hot -d --port 8880 --config _webpack.demo.config.js",
     "build:dist": "webpack --config _webpack.dist.config.js --optimize-minimize",
     "build:demo": "webpack --config _webpack.demo.config.js --optimize-minimize",
-    "test": "karma start _karma.conf.js --autowatch --no-single-run",
     "prepublish": "npm run build:dist"
   },
   "author": "Jake Ginnivan",
@@ -38,13 +37,6 @@
     "babel-runtime": "^6.23.0",
     "eslint": "^2.8.0",
     "eslint-plugin-react": "^5.0.1",
-    "karma": "^1.7.0",
-    "karma-chrome-launcher": "^2.1.1",
-    "karma-mocha": "^1.3.0",
-    "karma-source-map-support": "^1.2.0",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^2.0.3",
-    "mocha": "^3.4.2",
     "node-libs-browser": "^0.5.2",
     "webpack": "^1.11.0",
     "webpack-dev-server": "^1.12.1"
