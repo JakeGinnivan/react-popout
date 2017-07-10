@@ -68,7 +68,9 @@ export default class PopoutWindow extends React.Component {
           ownerWindow  = this.props.window || window,
           openedWindow = {
             update(newComponent){
-              ReactDOM.render(newComponent, container);
+              if (container) {
+                ReactDOM.render(newComponent, container);
+              }
             },
             close(){
               popoutWindow && popoutWindow.close();
@@ -114,8 +116,10 @@ export default class PopoutWindow extends React.Component {
     };
 
     popoutWindow.onload = onloadHandler;
-    // Just in case that onload doesn't fire / has fired already, we call it manually if it's ready.
-    popoutWindow.document.readyState === 'complete' && onloadHandler();
+    // If they have no specified a URL, then we need to forcefully call onloadHandler()
+    if (!this.props.url) {
+      popoutWindow.document.readyState === 'complete' && onloadHandler();
+    }
 
     this.setState({openedWindow});
   }
@@ -138,7 +142,8 @@ export default class PopoutWindow extends React.Component {
   }
 
   render(){
-    return <div></div>;
+    // No need to render anything.
+    return null;
   }
 
 }
