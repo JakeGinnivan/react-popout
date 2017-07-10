@@ -103,19 +103,14 @@ export default class PopoutWindow extends React.Component {
     ownerWindow.addEventListener('unload', this.closeWindow);
 
     const onloadHandler = () =>{
-      if (container){
-        if (popoutWindow.document.getElementById(this[_CONTAINER_ID])) return;
+      if (!container){
+        popoutWindow.document.title = this.props.title;
+        container = popoutWindow.document.createElement('div');
+        container.id = this[_CONTAINER_ID];
+        popoutWindow.document.body.appendChild(container);
 
-        ReactDOM.unmountComponentAtNode(container);
-        container = null;
+        ReactDOM.render(this.props.children, container);
       }
-
-      popoutWindow.document.title = this.props.title;
-      container = popoutWindow.document.createElement('div');
-      container.id = this[_CONTAINER_ID];
-      popoutWindow.document.body.appendChild(container);
-
-      ReactDOM.render(this.props.children, container);
     };
 
     popoutWindow.onload = onloadHandler;
