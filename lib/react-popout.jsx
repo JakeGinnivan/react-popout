@@ -97,6 +97,8 @@ export default class PopoutWindow extends React.Component {
 
     popoutWindow = ownerWindow.open(this.props.url || 'about:blank', this.props.title, createOptions());
 
+    this.props.windowCallback && this.props.windowCallback(popoutWindow);
+
     popoutWindow.onbeforeunload = () =>{
       container && ReactDOM.unmountComponentAtNode(container);
       this.windowClosing();
