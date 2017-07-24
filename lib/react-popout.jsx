@@ -1,5 +1,6 @@
-import React        from 'react';
-import ReactDOM     from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 const _CONTAINER_ID = Symbol('container_id');
 
 /**
@@ -17,7 +18,7 @@ export default class PopoutWindow extends React.Component {
     options: React.PropTypes.object,
     window: React.PropTypes.object,
     containerId: React.PropTypes.string,
-    children: React.PropTypes.element
+    children: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.func])
   };
 
   state = {
@@ -42,7 +43,7 @@ export default class PopoutWindow extends React.Component {
    * @constructs PoppoutWindow
    * @param props
    */
-  constructor(props){
+  constructor(props) {
     super(props);
     this[_CONTAINER_ID] = props.containerId || 'popout-content-container';
     this.closeWindow = this.closeWindow.bind(this);
@@ -52,30 +53,34 @@ export default class PopoutWindow extends React.Component {
    * Override default id if we get given one
    * @param props
    */
-  componentWillReceiveProps(props){
+  componentWillReceiveProps(props) {
     props.containerId && (this[_CONTAINER_ID] = props.containerId);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.closeWindow();
   }
 
-  componentDidMount(){
-    let popoutWindow,
-        container;
+  componentDidMount() {
+    let popoutWindow;
+    let container;
 
-    const options      = Object.assign({}, this.defaultOptions, this.props.options),
-          ownerWindow  = this.props.window || window,
-          openedWindow = {
-            update(newComponent){
-              if (container) {
-                ReactDOM.render(newComponent, container);
-              }
-            },
-            close(){
-              popoutWindow && popoutWindow.close();
-            }
-          };
+    const options = Object.assign({}, this.defaultOptions, this.props.options);
+    const ownerWindow = this.props.window || window;
+    const openedWindow = {
+      update(newComponent) {
+        if (container) {
+          let renderedComponent = newComponent;
+          if (typeof newComponent === 'function') {
+            renderedComponent = newComponent(popoutWindow);
+          }
+          ReactDOM.render(renderedComponent, container);
+        }
+      },
+      close() {
+        popoutWindow && popoutWindow.close();
+      }
+    };
 
     if (!ownerWindow) {
       // If we have no owner windows, bail. Likely server side render
@@ -84,12 +89,12 @@ export default class PopoutWindow extends React.Component {
 
     const createOptions = () => {
       const ret = [];
-      for (let key in options){
+      for (let key in options) {
         options.hasOwnProperty(key) && ret.push(key + '=' + (
-            typeof options[key] === 'function' ?
-              options[key].call(this, options, ownerWindow) :
-              options[key]
-          )
+          typeof options[key] === 'function' ?
+            options[key].call(this, options, ownerWindow) :
+            options[key]
+        )
         );
       }
       return ret.join(',');
@@ -97,25 +102,25 @@ export default class PopoutWindow extends React.Component {
 
     popoutWindow = ownerWindow.open(this.props.url || 'about:blank', this.props.title, createOptions());
 
-    this.props.windowCallback && this.props.windowCallback(popoutWindow);
-
-    popoutWindow.onbeforeunload = () =>{
+    popoutWindow.onbeforeunload = () => {
       container && ReactDOM.unmountComponentAtNode(container);
       this.windowClosing();
     };
     // Close any open popouts when page unloads/refeshes
     ownerWindow.addEventListener('unload', this.closeWindow);
 
-    const onloadHandler = () =>{
-      if (!container){
+    const onloadHandler = () => {
+      if (!container) {
         popoutWindow.document.title = this.props.title;
         container = popoutWindow.document.createElement('div');
         container.id = this[_CONTAINER_ID];
         popoutWindow.document.body.appendChild(container);
 
-        ReactDOM.render(this.props.children, container);
+        this.state.openedWindow.update(this.props.children);
       }
     };
+
+    this.setState({ openedWindow });
 
     popoutWindow.onload = onloadHandler;
     // If they have no specified a URL, then we need to forcefully call onloadHandler()
@@ -123,27 +128,26 @@ export default class PopoutWindow extends React.Component {
       popoutWindow.document.readyState === 'complete' && onloadHandler();
     }
 
-    this.setState({openedWindow});
   }
 
-  closeWindow(){
+  closeWindow() {
     this.state.openedWindow && this.state.openedWindow.close();
     (this.props.window || window).removeEventListener('unload', this.closeWindow);
   }
 
-  windowClosing(){
+  windowClosing() {
     this.props.onClosing && this.props.onClosing();
   }
 
   /**
    * Bubble changes
    */
-  componentDidUpdate(){
+  componentDidUpdate() {
     // For SSR we might get updated but there will be no openedWindow. Make sure openedWIndow exists before calling
     this.state.openedWindow && this.state.openedWindow.update(this.props.children);
   }
 
-  render(){
+  render() {
     // No need to render anything.
     return null;
   }
