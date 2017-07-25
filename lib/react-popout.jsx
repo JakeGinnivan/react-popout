@@ -106,7 +106,7 @@ export default class PopoutWindow extends React.Component {
       container && ReactDOM.unmountComponentAtNode(container);
       this.windowClosing();
     };
-    // Close any open popouts when page unloads/refeshes
+    // Close any open popouts when page unloads/refreshes
     ownerWindow.addEventListener('unload', this.closeWindow);
 
     const onloadHandler = () => {
