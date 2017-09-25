@@ -102,7 +102,7 @@ export default class PopoutWindow extends React.Component {
       return ret.join(',');
     };
 
-    popoutWindow = ownerWindow.open(this.props.url || 'about:blank', this.props.title, createOptions());
+    popoutWindow = ownerWindow.open(this.props.url || 'about:blank', this.props.name || this.props.title, createOptions());
 
     popoutWindow.onbeforeunload = () => {
       container && ReactDOM.unmountComponentAtNode(container);
