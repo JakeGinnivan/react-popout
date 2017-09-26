@@ -119,6 +119,13 @@ export default class PopoutWindow extends React.Component {
     }
   }
 
+  /**
+   * API method to close the window.
+   */
+  closeWindow() {
+    this.mainWindowClosed();
+  }
+
   mainWindowClosed() {
     this.state.popoutWindow && this.state.popoutWindow.close();
     (this.props.window || window).removeEventListener('unload', this.mainWindowClosed);
