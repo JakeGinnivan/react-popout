@@ -143,5 +143,4 @@ export default class PopoutWindow extends React.Component {
   render() {
     return null;
   }
-
 }
