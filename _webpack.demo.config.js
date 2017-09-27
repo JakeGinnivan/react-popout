@@ -1,7 +1,7 @@
 module.exports = {
   entry: ['./demo/exampleContainer.jsx'],
   output: {
-    path: './demo',
+    path: __dirname + '/demo',
     filename: 'examples.js'
   },
   devServer: {
@@ -12,7 +12,7 @@ module.exports = {
     loaders: [{
       test: /\.j(s|sx)$/,
       exclude: /node_modules/,
-      loader: 'babel',
+      loader: 'babel-loader',
       query: {
         presets: ['es2015', 'stage-0', 'react']
       }

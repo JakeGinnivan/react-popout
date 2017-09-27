@@ -1,7 +1,7 @@
 module.exports = {
   entry: ['./lib/react-popout.jsx'],
   output: {
-    path: './dist',
+    path: __dirname + '/dist',
     filename: 'react-popout.min.js',
     libraryTarget: 'umd'
   },
@@ -9,7 +9,7 @@ module.exports = {
     loaders: [{
       test: /\.j(s|sx)$/,
       exclude: /node_modules/,
-      loader: 'babel',
+      loader: 'babel-loader',
       query: {
         presets: ['es2015', 'stage-0', 'react']
       }

@@ -62,7 +62,7 @@ Instead of using the `window` global, a window object can be passed in. It needs
 ```
 This can be used if you need to intercept the calls and do something else.
 
-### containerID [optional]
+### containerId [optional]
 
 Assigns an Id to the container that will be injected in the popup window `document.body`, defaults to `popout-content-container`, useful for cascading styles.
 
