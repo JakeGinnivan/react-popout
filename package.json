@@ -21,7 +21,7 @@
         "demo": "webpack-dev-server --progress --colors --hot -d --port 8880 --config _webpack.demo.config.js",
         "build:dist": "webpack --config _webpack.dist.config.js --optimize-minimize",
         "build:demo": "webpack --config _webpack.demo.config.js --optimize-minimize",
-        "test": "karma start _karma.conf.js --autowatch --no-single-run",
+        "test": "mocha \"test/**/*spec.js*\" --compilers js:babel-register --reporter dot",
         "prepublish": "npm run build:dist"
     },
     "author": "Jake Ginnivan",
@@ -48,7 +48,8 @@
         "webpack-dev-server": "^2.8.2"
     },
     "dependencies": {
-        "prop-types": "^15.6.0"
+        "prop-types": "^15.6.0",
+        "react": "^0.14.9"
     },
     "peerDependencies": {
         "react": "^15.0.0",
