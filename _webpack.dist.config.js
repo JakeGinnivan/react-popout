@@ -1,7 +1,7 @@
 module.exports = {
   entry: ['./lib/react-popout.jsx'],
   output: {
-    path: __dirname + './dist',
+    path: __dirname + '/dist',
     filename: 'react-popout.min.js',
     libraryTarget: 'umd'
   },
