@@ -11,7 +11,7 @@ indent_style = space
 
 # Indentation size in single-spaced characters
 # Possible values - an integer, tab
-indent_size = 2
+indent_size = 4
 
 # Line ending file format
 # Possible values - lf, crlf, cr
