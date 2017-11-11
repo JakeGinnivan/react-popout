@@ -11,7 +11,7 @@ Import with `es6`
 ```
 import PopoutWindow from 'react-popout'
 ```
-The usage is really simple, when the component is mounted the popup is open, when it is unmounted the popup is closed.
+The usage is really simple. When the component is mounted the popup is open, and when it is unmounted the popup is closed.
 
 ``` js
 <Popout url='popout.html' title='Window title' onClosing={this.popupClosed}>
@@ -23,13 +23,13 @@ To close the window programatically give the window a ref and use the `closeWind
 
 ## props
 ### title [required]
-Title for popup window
+Title for popup window.
 
 ### url [optional]
-Url of the page to load intially. Often needed for css. `about:blank` will be used if not specified
+URL of the page to load intially. Often needed for css. `about:blank` will be used if not specified.
 
 ### onClosing [optional]
-Called when popout window is closed, either by user or by calling close
+Called when popout window is closed, either by user or by calling close.
 
 ### options [optional]
 Object representing window options. See https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Position_and_size_features for reference.
