@@ -32,7 +32,7 @@ URL of the page to load intially. Often needed for css. `about:blank` will be us
 Called when popout window is closed, either by user or by calling close.
 
 ### options [optional]
-Object representing window options. See https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Position_and_size_features for reference.
+Object representing window options. See [the docs](https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Position_and_size_features) for reference.
 
 Example:
 `<Popout options={{left: '100px', top: '200px'}} />`
