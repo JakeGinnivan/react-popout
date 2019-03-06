@@ -79,6 +79,18 @@ Example:
 </div>
 ```
 
+### onError [optional]
+
+Provides a callback incase the window wasn't opened, usually due to a popout blocker within the browser.
+
+Example:
+```
+// input
+<Popout onError={() => {}}>
+    ...
+</Popout>
+```
+
 ## Example hosting component
 
 ``` js
