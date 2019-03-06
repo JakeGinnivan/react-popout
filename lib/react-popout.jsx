@@ -24,7 +24,8 @@ const ABOUT_BLANK = 'about:blank';
 export default class PopoutWindow extends React.Component {
     static defaultProps = {
         url: ABOUT_BLANK,
-        containerId: 'popout-content-container'
+        containerId: 'popout-content-container',
+        onError: () => {}
     };
 
     /**
@@ -38,7 +39,8 @@ export default class PopoutWindow extends React.Component {
         options: PropTypes.object,
         window: PropTypes.object,
         containerId: PropTypes.string,
-        children: PropTypes.oneOfType([PropTypes.element, PropTypes.func])
+        children: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+        onError: PropTypes.func
     };
 
     /**
@@ -118,6 +120,10 @@ export default class PopoutWindow extends React.Component {
 
     openPopoutWindow(ownerWindow) {
         const popoutWindow = ownerWindow.open(this.props.url, this.props.name || this.props.title, this.createOptions(ownerWindow));
+        if (!popoutWindow) {
+            this.props.onError();
+            return;
+        }
         this.setState({ popoutWindow });
 
         popoutWindow.addEventListener('load', this.popoutWindowLoaded);
