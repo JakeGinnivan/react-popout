@@ -9,7 +9,7 @@ To see it in action just go to [http://jake.ginnivan.net/react-popout](http://ja
 ## Usage
 Import with `es6`
 ```
-import PopoutWindow from 'react-popout'
+import Popout from 'react-popout'
 ```
 The usage is really simple. When the component is mounted the popup is open, and when it is unmounted the popup is closed.
 
