@@ -129,9 +129,12 @@ export default class PopoutWindow extends React.Component {
         popoutWindow.addEventListener('load', this.popoutWindowLoaded);
         popoutWindow.addEventListener('beforeunload', this.popoutWindowUnloading);
 
-        // If they have no specified a URL, then we need to forcefully call popoutWindowLoaded()
         if (this.props.url === ABOUT_BLANK) {
+            // If they have no specified a URL, then we need to forcefully call popoutWindowLoaded()
             popoutWindow.document.readyState === 'complete' && this.popoutWindowLoaded(popoutWindow);
+        }else{
+            // If they have a specified URL, then we need to check if the window closes without a listener
+            this.checkForPopoutWindowClosure(popoutWindow);
         }
     }
 
@@ -140,6 +143,21 @@ export default class PopoutWindow extends React.Component {
      */
     closeWindow() {
         this.mainWindowClosed();
+    }
+
+    /**
+     * Use if a URL was passed to the popout window. Checks every 500ms if the window has been closed.
+     * Calls the onClosing() prop if the window is closed.
+     *
+     * @param popoutWindow
+     */
+    checkForPopoutWindowClosure(popoutWindow) {
+        let interval = setInterval(()=>{
+            if(popoutWindow.closed){
+                clearInterval(interval);
+                this.props.onClosing && this.props.onClosing();
+            }
+        },500);
     }
 
     mainWindowClosed() {
