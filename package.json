@@ -1,6 +1,6 @@
 {
     "name": "react-popout",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Wraps window.open in a react component, allowing the contents to be part of your react render tree",
     "main": "dist/react-popout.min.js",
     "repository": {
