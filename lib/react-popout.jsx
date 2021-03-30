@@ -57,7 +57,8 @@ export default class PopoutWindow extends React.Component {
         this.state = {
             openedWindowComponent: null,
             popoutWindow: null,
-            container: null
+            container: null,
+            lastTitle: null
         };
     }
 
@@ -88,11 +89,20 @@ export default class PopoutWindow extends React.Component {
         }
     }
 
-    componentWillReceiveProps(newProps) {
-        if (newProps.title !== this.props.title && this.state.popoutWindow) {
-
-            this.state.popoutWindow.document.title = newProps.title;
+    static getDerivedStateFromProps(props, state) {
+        if (
+            props.title !== state.lastTitle &&
+            state.popoutWindow &&
+            props.children && // only change when children, not url is given
+            props.url === ABOUT_BLANK // only change when children, not url is given
+        ) {
+            state.popoutWindow.document.title = props.title;
+            return {
+                lastTitle: props.title
+            };
         }
+        // Return null to indicate no change to state.
+        return null;
     }
 
     componentDidUpdate() {
