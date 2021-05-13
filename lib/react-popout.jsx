@@ -65,15 +65,15 @@ export default class PopoutWindow extends React.Component {
         const mergedOptions = Object.assign({}, DEFAULT_OPTIONS, this.props.options);
 
         return Object.keys(mergedOptions)
-        .map(
-            key =>
-                key +
-                '=' +
-                (typeof mergedOptions[key] === 'function'
-                    ? mergedOptions[key].call(this, mergedOptions, ownerWindow)
-                    : mergedOptions[key])
-        )
-        .join(',');
+            .map(
+                key =>
+                    key +
+                    '=' +
+                    (typeof mergedOptions[key] === 'function'
+                        ? mergedOptions[key].call(this, mergedOptions, ownerWindow)
+                        : mergedOptions[key])
+            )
+            .join(',');
     }
 
     componentDidMount() {
@@ -90,7 +90,6 @@ export default class PopoutWindow extends React.Component {
 
     componentWillReceiveProps(newProps) {
         if (newProps.title !== this.props.title && this.state.popoutWindow) {
-
             this.state.popoutWindow.document.title = newProps.title;
         }
     }
@@ -127,12 +126,12 @@ export default class PopoutWindow extends React.Component {
         this.setState({ popoutWindow });
 
         popoutWindow.addEventListener('load', this.popoutWindowLoaded);
-        popoutWindow.addEventListener('beforeunload', this.popoutWindowUnloading);
+        popoutWindow.addEventListener('unload', this.popoutWindowUnloading);
 
         if (this.props.url === ABOUT_BLANK) {
             // If they have no specified a URL, then we need to forcefully call popoutWindowLoaded()
             popoutWindow.document.readyState === 'complete' && this.popoutWindowLoaded(popoutWindow);
-        }else{
+        } else {
             // If they have a specified URL, then we need to check if the window closes without a listener
             this.checkForPopoutWindowClosure(popoutWindow);
         }
@@ -152,12 +151,12 @@ export default class PopoutWindow extends React.Component {
      * @param popoutWindow
      */
     checkForPopoutWindowClosure(popoutWindow) {
-        let interval = setInterval(()=>{
-            if(popoutWindow.closed){
-                clearInterval(interval);
+        this.interval = setInterval(() => {
+            if (popoutWindow.closed) {
+                clearInterval(this.interval);
                 this.props.onClosing && this.props.onClosing();
             }
-        },500);
+        }, 500);
     }
 
     mainWindowClosed() {
@@ -166,8 +165,11 @@ export default class PopoutWindow extends React.Component {
     }
 
     popoutWindowUnloading() {
-        ReactDOM.unmountComponentAtNode(this.state.container);
-        this.props.onClosing && this.props.onClosing();
+        if (this.state.container) {
+            clearInterval(this.interval);
+            ReactDOM.unmountComponentAtNode(this.state.container);
+            this.props.onClosing && this.props.onClosing();
+        }
     }
 
     renderToContainer(container, popoutWindow, children) {
