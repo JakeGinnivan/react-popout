@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import PropTypes from 'prop-types';
 
 const DEFAULT_OPTIONS = {
@@ -50,6 +50,7 @@ export default class PopoutWindow extends React.Component {
     constructor(props) {
         super(props);
 
+        this.root = createRoot(document.createElement('div'));
         this.mainWindowClosed = this.mainWindowClosed.bind(this);
         this.popoutWindowUnloading = this.popoutWindowUnloading.bind(this);
         this.popoutWindowLoaded = this.popoutWindowLoaded.bind(this);
@@ -167,7 +168,7 @@ export default class PopoutWindow extends React.Component {
     popoutWindowUnloading() {
         if (this.state.container) {
             clearInterval(this.interval);
-            ReactDOM.unmountComponentAtNode(this.state.container);
+            this.root.unmount(this.state.container);
             this.props.onClosing && this.props.onClosing();
         }
     }
@@ -179,7 +180,8 @@ export default class PopoutWindow extends React.Component {
             if (typeof children === 'function') {
                 renderedComponent = children(popoutWindow);
             }
-            ReactDOM.render(renderedComponent, container);
+
+            this.root.render(renderedComponent, container);
         }
     }
 
