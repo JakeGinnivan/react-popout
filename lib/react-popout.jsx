@@ -50,7 +50,6 @@ export default class PopoutWindow extends React.Component {
     constructor(props) {
         super(props);
 
-        this.root = createRoot(document.createElement('div'));
         this.mainWindowClosed = this.mainWindowClosed.bind(this);
         this.popoutWindowUnloading = this.popoutWindowUnloading.bind(this);
         this.popoutWindowLoaded = this.popoutWindowLoaded.bind(this);
@@ -181,7 +180,10 @@ export default class PopoutWindow extends React.Component {
                 renderedComponent = children(popoutWindow);
             }
 
-            this.root.render(renderedComponent, container);
+            if (!this.root) {
+                this.root = createRoot(container);
+            }
+            this.root.render(renderedComponent);
         }
     }
 

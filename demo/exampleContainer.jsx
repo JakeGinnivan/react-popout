@@ -1,8 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Example from './demo.jsx';
 import Example2 from './demo2.jsx';
 import Example3 from './demo3.jsx';
+import { createRoot } from 'react-dom/client';
 
 class ExampleContainer extends React.Component {
   render() {
@@ -20,4 +20,5 @@ class ExampleContainer extends React.Component {
 
 const container = document.createElement('div');
 document.body.appendChild(container);
-ReactDOM.render(<ExampleContainer />, container);
+const root = createRoot(container);
+root.render(<ExampleContainer />);
