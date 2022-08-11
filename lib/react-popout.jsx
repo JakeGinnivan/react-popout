@@ -25,6 +25,7 @@ export default class PopoutWindow extends React.Component {
     static defaultProps = {
         url: ABOUT_BLANK,
         containerId: 'popout-content-container',
+        containerClassName: '',
         onError: () => {}
     };
 
@@ -39,6 +40,7 @@ export default class PopoutWindow extends React.Component {
         options: PropTypes.object,
         window: PropTypes.object,
         containerId: PropTypes.string,
+        containerClassName: PropTypes.string,
         children: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
         onError: PropTypes.func
     };
@@ -110,6 +112,7 @@ export default class PopoutWindow extends React.Component {
             popoutWindow.document.title = this.props.title;
             let container = popoutWindow.document.createElement('div');
             container.id = this.props.containerId;
+            container.className = this.props.containerClassName;
             popoutWindow.document.body.appendChild(container);
 
             this.setState({ container });
