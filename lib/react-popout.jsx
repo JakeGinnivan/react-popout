@@ -171,7 +171,7 @@ export default class PopoutWindow extends React.Component {
         if (this.state.container) {
             clearInterval(this.interval);
             this.root.unmount(this.state.container);
-            this.props.onClosing && this.props.onClosing();
+            this.props.onClosing && this.props.onClosing(this.state.popoutWindow);
         }
     }
 
