@@ -157,7 +157,7 @@ export default class PopoutWindow extends React.Component {
         this.interval = setInterval(() => {
             if (popoutWindow.closed) {
                 clearInterval(this.interval);
-                this.props.onClosing && this.props.onClosing();
+                this.props.onClosing && this.props.onClosing(popoutWindow);
             }
         }, 500);
     }
