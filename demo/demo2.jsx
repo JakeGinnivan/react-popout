@@ -1,5 +1,5 @@
 import React from 'react';
-import Popout from '../lib/react-popout.jsx';
+import Popout from '../lib/react-popout';
 
 export default class Example2 extends React.Component {
   constructor(props) {
