@@ -37,8 +37,9 @@ interface PopoutWindowState {
  * @class PopoutWindow
  */
 export default class PopoutWindow extends React.Component<PopoutWindowProps, PopoutWindowState> {
-    private interval!: number;
-    private root!: Root;
+    private interval?: number;
+    private root?: Root;
+    private closed = false;
 
     static defaultProps = {
         url: ABOUT_BLANK,
@@ -55,7 +56,8 @@ export default class PopoutWindow extends React.Component<PopoutWindowProps, Pop
         super(props);
 
         this.mainWindowClosed = this.mainWindowClosed.bind(this);
-        this.popoutWindowUnloading = this.popoutWindowUnloading.bind(this);
+        this.mainWindowPageHiding = this.mainWindowPageHiding.bind(this);
+        this.popoutWindowClosing = this.popoutWindowClosing.bind(this);
         this.popoutWindowLoaded = this.popoutWindowLoaded.bind(this);
 
         this.state = {
@@ -90,18 +92,16 @@ export default class PopoutWindow extends React.Component<PopoutWindowProps, Pop
         if (ownerWindow) {
             this.openPopoutWindow(ownerWindow);
 
-            // Close any open popouts when page unloads/refreshes
-            ownerWindow.addEventListener('unload', this.mainWindowClosed);
+            // Close any open popouts when the owner page is navigated away from or discarded.
+            ownerWindow.addEventListener('pagehide', this.mainWindowPageHiding);
         }
     }
 
-    componentWillReceiveProps(newProps: PopoutWindowProps) {
-        if (newProps.title !== this.props.title && this.state.popoutWindow) {
-            this.state.popoutWindow.document.title = newProps.title!;
+    componentDidUpdate(previousProps: PopoutWindowProps) {
+        if (previousProps.title !== this.props.title && this.state.popoutWindow) {
+            this.state.popoutWindow.document.title = this.props.title!;
         }
-    }
 
-    componentDidUpdate() {
         this.renderToContainer(this.state.container!, this.state.popoutWindow!, this.props.children);
     }
 
@@ -135,7 +135,7 @@ export default class PopoutWindow extends React.Component<PopoutWindowProps, Pop
 
         // @ts-ignore
         popoutWindow.addEventListener('load', this.popoutWindowLoaded);
-        popoutWindow.addEventListener('unload', this.popoutWindowUnloading);
+        popoutWindow.addEventListener('pagehide', this.popoutWindowClosing);
 
         if (this.props.url === ABOUT_BLANK) {
             // If they have no specified a URL, then we need to forcefully call popoutWindowLoaded()
@@ -162,22 +162,56 @@ export default class PopoutWindow extends React.Component<PopoutWindowProps, Pop
     checkForPopoutWindowClosure(popoutWindow: Window) {
         this.interval = window.setInterval(() => {
             if (popoutWindow.closed) {
-                clearInterval(this.interval);
-                this.props.onClosing && this.props.onClosing(popoutWindow);
+                this.finishClosing(popoutWindow);
             }
         }, 500);
     }
 
     mainWindowClosed() {
-        this.state.popoutWindow && this.state.popoutWindow.close();
-        (this.props.window || window).removeEventListener('unload', this.mainWindowClosed);
+        const popoutWindow = this.state.popoutWindow;
+        this.finishClosing(popoutWindow);
+        if (popoutWindow) {
+            popoutWindow.close();
+        }
+        (this.props.window || window).removeEventListener('pagehide', this.mainWindowPageHiding);
     }
 
-    popoutWindowUnloading() {
+    private mainWindowPageHiding(event: PageTransitionEvent) {
+        if (!event.persisted) {
+            this.mainWindowClosed();
+        }
+    }
+
+    popoutWindowClosing() {
         if (this.state.container) {
+            this.finishClosing(this.state.popoutWindow);
+        }
+    }
+
+    private finishClosing(popoutWindow: Window | null) {
+        if (this.closed) {
+            return;
+        }
+
+        this.closed = true;
+
+        if (this.interval !== undefined) {
             clearInterval(this.interval);
+        }
+
+        if (popoutWindow) {
+            // @ts-ignore
+            popoutWindow.removeEventListener('load', this.popoutWindowLoaded);
+            popoutWindow.removeEventListener('pagehide', this.popoutWindowClosing);
+        }
+
+        if (this.root) {
             this.root.unmount();
-            this.props.onClosing && this.props.onClosing(this.state.popoutWindow);
+        }
+        this.root = undefined;
+
+        if (this.props.onClosing) {
+            this.props.onClosing(popoutWindow);
         }
     }
 
